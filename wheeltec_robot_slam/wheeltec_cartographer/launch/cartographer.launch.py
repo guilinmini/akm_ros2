@@ -77,7 +77,7 @@ def generate_launch_description():
             remappings=[
                   ('scan', 'scan'),  #
                   # ('imu','/imu/data'),
-                  ('odom','odom_laser')
+                  ('odom','odom_laser') # 重映射为激光雷达里程计
               ]
             ),
 

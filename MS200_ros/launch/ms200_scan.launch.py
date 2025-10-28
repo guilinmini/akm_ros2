@@ -34,7 +34,7 @@ def generate_launch_description():
         # {'port_name': '/dev/ttyCH343USB0'},
         {'baudrate': 230400},
         {'angle_min': 60.0},
-        {'angle_max': 300.0},
+        {'angle_max': 300.0}, # 调整激光雷达扫描角度范围
         {'range_min': 0.05},
         {'range_max': 20.0},
         {'clockwise': False},
@@ -47,7 +47,7 @@ def generate_launch_description():
     package='tf2_ros',
     executable='static_transform_publisher',
     name='base_link_to_base_laser',
-    arguments=['0.16','0','0.08','3.1415926','0','0','base_link','laser_frame']
+    arguments=['0.16','0','0.08','3.1415926','0','0','base_link','laser_frame'] # 激光雷达相对于机器人坐标系的静态变换
   )
 
 

@@ -15,7 +15,7 @@ def generate_launch_description():
             package='turn_on_wheeltec_robot',
             executable='wheeltec_robot_node',
             output='screen',
-            parameters=[{'usart_port_name': '/dev/wheeltec_controller',  # /dev/wheeltec_controller /dev/ttyCH343USB1
+            parameters=[{'usart_port_name': '/dev/wheeltec_controller',  # 需要修改 /dev/wheeltec_controller /dev/ttyCH343USB1
                 'serial_baud_rate': 115200,
                 'robot_frame_id': 'base_footprint',
                 # 'odom_frame_id': 'odom_combined',

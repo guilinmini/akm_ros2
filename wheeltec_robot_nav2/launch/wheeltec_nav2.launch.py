@@ -18,6 +18,7 @@ def generate_launch_description():
     map_dir = os.path.join(wheeltec_nav_dir, 'map')
     map_file = LaunchConfiguration('map', default=os.path.join(
         map_dir, 'WHEELTEC.yaml'))
+    # 这个路径可以指定自己的地图文件
     # map_file = os.path.join('/home/ros2/wheeltec_ros2/src/wheeltec_robot_nav2/map/WHEELTEC.yaml')
 
     #Modify the model parameter file, the options are:

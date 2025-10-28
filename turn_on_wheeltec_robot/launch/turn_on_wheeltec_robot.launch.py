@@ -15,9 +15,11 @@ from launch.conditions import UnlessCondition
 
 def generate_launch_description():
     # Get the launch directory
+    # 增加ros2_laser_scan_matcher的launch文件路径
     ros2_laser_scan_matcher_launch_dir = get_package_share_directory('ros2_laser_scan_matcher')
     ros2_laser_scan_matcher_launch_dir = os.path.join(ros2_laser_scan_matcher_launch_dir,"launch")
 
+    # 增加激光雷达的launch文件路径
     lidar_launch_dir = get_package_share_directory('oradar_lidar')
     lidar_launch_dir = os.path.join(lidar_launch_dir, 'launch')
 
@@ -64,7 +66,8 @@ def generate_launch_description():
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_gyro',
-            arguments=['0', '0', '0','-1.5708', '0','0','base_footprint','gyro_link'], # 修改imu安装方向的偏移角
+            # 修改imu安装方向的偏移角度值（以弧度为单位），例如-1.5708表示逆时针旋转90度
+            arguments=['0', '0', '0','-1.5708', '0','0','base_footprint','gyro_link'],
     )
 
     imu_filter_node =  launch_ros.actions.Node(
@@ -104,11 +107,13 @@ def generate_launch_description():
             launch_arguments={'S200_diff_robot': 'true'}.items(),
     )
 
+    # Include ros2_laser_scan_matcher launch file
     ros2_laser_scan_matcher = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
               [ros2_laser_scan_matcher_launch_dir,'/laser_scan_matcher_launch.py']),
         )
 
+    # Include lidar launch file
     lidar_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [lidar_launch_dir, '/ms200_scan.launch.py']),
@@ -124,8 +129,8 @@ def generate_launch_description():
     ld.add_action(base_to_gyro)
     ld.add_action(joint_state_publisher_node)
     # ld.add_action(imu_filter_node)
-    ld.add_action(lidar_launch)
-    ld.add_action(ros2_laser_scan_matcher)
+    ld.add_action(lidar_launch) # 启动激光雷达
+    ld.add_action(ros2_laser_scan_matcher) # 启动激光雷达里程计模块
     # ld.add_action(robot_ekf)  # 取消扩展卡尔曼滤波的发布
 
     return ld

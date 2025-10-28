@@ -150,7 +150,7 @@ void turn_on_robot::Publish_Odom()
     //There are two types of this matrix, which are used when the robot is at rest and when it is moving.Extended Kalman Filtering officially provides 2 matrices for the robot_pose_ekf feature pack
     //这个矩阵有两种，分别在机器人静止和运动的时候使用。扩展卡尔曼滤波官方提供的2个矩阵，用于robot_pose_ekf功能包
     // if(Robot_Vel.X== 0&&Robot_Vel.Y== 0&&Robot_Vel.Z== 0)
-    if(1)
+    if(1) // 始终认为认为编码器数据更可靠
       //If the velocity is zero, it means that the error of the encoder will be relatively small, and the data of the encoder will be considered more reliable
       //如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
       memcpy(&odom.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2)),
