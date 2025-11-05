@@ -16,12 +16,20 @@ Date: January 28, 2021
 Function: The main function, ROS initialization, creates the Robot_control object through the Turn_on_robot class and automatically calls the constructor initialization
 功能: 主函数，ROS初始化，通过turn_on_robot类创建Robot_control对象并自动调用构造函数初始化
 ***************************************/
+// int main(int argc, char** argv)
+// {
+//   rclcpp::init(argc, argv); //ROS initializes and sets the node name //ROS初始化 并设置节点名称
+//   turn_on_robot Robot_Control;//Instantiate an object //实例化一个对象
+//   Robot_Control.Control();//Loop through data collection and publish the topic //循环执行数据采集和发布话题等操作
+//     return 0;
+// }
 int main(int argc, char** argv)
 {
-  rclcpp::init(argc, argv); //ROS initializes and sets the node name //ROS初始化 并设置节点名称
-  turn_on_robot Robot_Control;//Instantiate an object //实例化一个对象
-  Robot_Control.Control();//Loop through data collection and publish the topic //循环执行数据采集和发布话题等操作
-    return 0;
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<turn_on_robot>();
+  rclcpp::spin(node);
+  rclcpp::shutdown();
+  return 0;
 }
 
 /**************************************
@@ -86,6 +94,10 @@ void turn_on_robot::Cmd_Vel_Callback(const geometry_msgs::msg::Twist::SharedPtr 
   try
   {
     Stm32_Serial.write(Send_Data.tx,sizeof (Send_Data.tx)); //Sends data to the downloader via serial port //通过串口向下位机发送数据
+    Stm32_Serial.flush();
+    RCLCPP_INFO(this->get_logger(), "-------------Sending cmd_vel: linear_x: %.3f, linear_y: %.3f, angular_z: %.3f",
+                  twist_aux->linear.x, twist_aux->linear.y, twist_aux->angular.z);
+
   }
   catch (serial::IOException& e)
   {
@@ -622,8 +634,6 @@ void turn_on_robot::Control()
 {
   //_Last_Time = ros::Time::now();
   _Last_Time = rclcpp::Node::now();
-  while(rclcpp::ok())
-  {
     try
     {
     //_Now = ros::Time::now();
@@ -667,14 +677,13 @@ void turn_on_robot::Control()
       check_AutoCharge_data = false;
     }
 
-    rclcpp::spin_some(this->get_node_base_interface());   //The loop waits for the callback function //循环等待回调函数
+    // rclcpp::spin_some(this->get_node_base_interface());   //The loop waits for the callback function //循环等待回调函数
     }
 
     catch (const rclcpp::exceptions::RCLError & e )
   {
   RCLCPP_ERROR(this->get_logger(),"unexpectedly failed whith %s",e.what());
   }
-}
 }
 /**************************************
 Date: January 28, 2021
@@ -740,6 +749,10 @@ turn_on_robot::turn_on_robot():rclcpp::Node ("wheeltec_robot")
   Cmd_Vel_Sub = create_subscription<geometry_msgs::msg::Twist>(
       "cmd_vel", 2, std::bind(&turn_on_robot::Cmd_Vel_Callback, this, _1));
 
+  control_timer_ = this->create_wall_timer(
+      std::chrono::milliseconds(10),  // 100Hz
+      std::bind(&turn_on_robot::Control, this)
+  );
   RCLCPP_INFO(this->get_logger(),"wheeltec_robot Data ready"); //Prompt message //提示信息
 
   try

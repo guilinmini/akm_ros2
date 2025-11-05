@@ -60,7 +60,8 @@ def generate_launch_description():
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_link',
-            arguments=['0', '0', '0','0', '0','0','base_footprint','base_link'],
+            # arguments=['0', '0', '0','0', '0','0','base_footprint','base_link'],
+            arguments=['0', '0', '0','0', '0','0','base_link','base_footprint'], # 替换坐标系子父关系，就可以不用将后面的base_footprint 替换为 base_link，已替换的不受影响
     )
     base_to_gyro = launch_ros.actions.Node(
             package='tf2_ros',

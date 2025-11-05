@@ -29,8 +29,9 @@ def generate_launch_description():
     #param_top_akm_dl.yaml/param_four_wheel_diff_dl.yaml/param_four_wheel_diff_bs.yaml
 
     param_dir = os.path.join(wheeltec_nav_dir, 'param','wheeltec_params')
-    param_file = LaunchConfiguration('params', default=os.path.join(
-        param_dir, 'param_mini_akm.yaml'))
+    # param_file = LaunchConfiguration('params', default=os.path.join(
+    #     param_dir, 'param_mini_akm.yaml'))
+    param_file = os.path.join('/home/ros2/wheeltec_ros2/src/wheeltec_robot_nav2/param/wheeltec_params/param_mini_akm.yaml')
 
 
     return LaunchDescription([

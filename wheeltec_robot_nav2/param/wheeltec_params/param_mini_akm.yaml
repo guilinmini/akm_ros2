@@ -1,10 +1,10 @@
 amcl:
   ros__parameters:
     use_sim_time: False
-    alpha1: 0.4   #里程计的旋转估计中来自旋转的预期过程噪声
+    alpha1: 0.2   #里程计的旋转估计中来自旋转的预期过程噪声
     alpha2: 0.2   #里程计的旋转估计中来自平移的预期过程噪声
     alpha3: 0.2  #里程计的翻译估计中来自translation的预期过程噪声
-    alpha4: 0.4  #里程计的平移估计中因旋转而产生的预期过程噪声
+    alpha4: 0.2  #里程计的平移估计中因旋转而产生的预期过程噪声
     alpha5: 0.2  #仅适用于 Omni 型号：translation噪音
     base_frame_id: "base_link" #机器人底座框架 base_footprint --> base_link
     introspection_mode: "disabled" #启用调试模式，这将发布额外的调试信息
@@ -117,7 +117,7 @@ controller_server:
       vy_std: 0.0       #Vy 的抽样标准差
       wz_std: 0.4       #Wz（角速度）的抽样标准差
       vx_max: 0.25       #目标最大前进速度（米/秒）
-      vx_min: -0.05      #目标最大反向速度（米/秒）
+      vx_min: -0.15      #目标最大反向速度（米/秒）
       vy_max: 0.0       #如果使用Omni运动模型，目标最大横向速度（m/s）
       wz_max: 2.0       #最大旋转速度（弧度/秒）
       ax_max: 1.5
